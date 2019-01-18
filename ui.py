@@ -27,8 +27,10 @@ class Page2(Page):
        Page.__init__(self, *args, **kwargs)
        label = tk.Label(self, text="Configure your Candy Sorter")
        label.pack(side="top", fill="both", expand=True)
+       initialValue = tk.StringVar(self)
+       initialValue.set("one") # initial value
        cupsLabel = tk.Label(self, text="Number of cups")
-       cupsEntry = tk.Entry(self)
+       cupsEntry = tk.OptionMenu(self, initialValue, "one", "two", "three", "four", "five")
        cupsLabel.pack()
        cupsEntry.pack()
        yellowLabel = tk.Label(self, text="Yellow")
@@ -74,8 +76,8 @@ class MainView(tk.Frame):
         p2.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
         p3.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
 
-        b1 = tk.Button(buttonframe, text="Page 1", command=p1.lift)
-        b2 = tk.Button(buttonframe, text="Page 2", command=p2.lift)
+        b1 = tk.Button(buttonframe, text="Welcome", command=p1.lift)
+        b2 = tk.Button(buttonframe, text="Configure", command=p2.lift)
         b3 = tk.Button(buttonframe, text="Page 3", command=p3.lift)
 
         b1.pack(side="left")
@@ -88,5 +90,6 @@ if __name__ == "__main__":
     root = tk.Tk()
     main = MainView(root)
     main.pack(side="top", fill="both", expand=True)
+    root.title("Candy Sorter")
     root.wm_geometry("400x400")
     root.mainloop()
