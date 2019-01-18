@@ -1,35 +1,92 @@
-from tkinter import *
+import tkinter as tk
 
-class Application(Frame):
-    def say_hi(self):
-        print("hi there, everyone!")
+class Page(tk.Frame):
+    def __init__(self, *args, **kwargs):
+        tk.Frame.__init__(self, *args, **kwargs)
+    def show(self):
+        self.lift()
 
-    def createWidgets(self):
-        self.greetings = Label(self, text="Start using your candy sorter")
+class Page1(Page):
+   def __init__(self, *args, **kwargs):
+       Page.__init__(self, *args, **kwargs)
+       self.greetings = tk.Label(self, text="Start using your candy sorter")
+       self.greetings.pack()
 
-        self.greetings.pack()
+       self.QUIT = tk.Button(self)
+       self.QUIT["text"] = "QUIT"
+       self.QUIT["fg"]   = "red"
+       self.QUIT["command"] =  self.quit
+       self.QUIT.pack({"side": "left"})
 
-        self.QUIT = Button(self)
-        self.QUIT["text"] = "QUIT"
-        self.QUIT["fg"]   = "red"
-        self.QUIT["command"] =  self.quit
+       self.startButton = tk.Button(self)
+       self.startButton["text"] = "Start",
+       self.startButton.pack({ "side": "left" })
 
-        self.QUIT.pack({"side": "left"})
+class Page2(Page):
+   def __init__(self, *args, **kwargs):
+       Page.__init__(self, *args, **kwargs)
+       label = tk.Label(self, text="Configure your Candy Sorter")
+       label.pack(side="top", fill="both", expand=True)
+       cupsLabel = tk.Label(self, text="Number of cups")
+       cupsEntry = tk.Entry(self)
+       cupsLabel.pack()
+       cupsEntry.pack()
+       yellowLabel = tk.Label(self, text="Yellow")
+       yellowEntry = tk.Entry(self)
+       yellowLabel.pack()
+       yellowEntry.pack()
+       greenLabel = tk.Label(self, text="Green")
+       greenEntry = tk.Entry(self)
+       yellowLabel.pack()
+       yellowEntry.pack()
+       blueLabel = tk.Label(self, text="Blue")
+       blueEntry = tk.Entry(self)
+       blueLabel.pack()
+       blueEntry.pack()
+       redLabel = tk.Label(self, text="Red")
+       redEntry = tk.Entry(self)
+       redLabel.pack()
+       redEntry.pack()
+       brownLabel = tk.Label(self, text="Brown")
+       brownEntry = tk.Entry(self)
+       brownLabel.pack()
+       brownEntry.pack()
 
-        self.hi_there = Button(self)
-        self.hi_there["text"] = "Start",
-        self.hi_there["command"] = self.say_hi
+class Page3(Page):
+   def __init__(self, *args, **kwargs):
+       Page.__init__(self, *args, **kwargs)
+       label = tk.Label(self, text="This is page 3")
+       label.pack(side="top", fill="both", expand=True)
 
-        self.hi_there.pack({"side": "left"})
+class MainView(tk.Frame):
+    def __init__(self, *args, **kwargs):
+        tk.Frame.__init__(self, *args, **kwargs)
+        p1 = Page1(self)
+        p2 = Page2(self)
+        p3 = Page3(self)
 
+        buttonframe = tk.Frame(self)
+        container = tk.Frame(self)
+        buttonframe.pack(side="top", fill="x", expand=False)
+        container.pack(side="top", fill="both", expand=True)
 
-    def __init__(self, master=None):
-        Frame.__init__(self, master)
-        self.pack()
-        self.createWidgets()
+        p1.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
+        p2.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
+        p3.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
 
-root = Tk()
-app = Application(master=root)
-app.master.title("Candy Sorter")
-app.mainloop()
-root.destroy()
+        b1 = tk.Button(buttonframe, text="Page 1", command=p1.lift)
+        b2 = tk.Button(buttonframe, text="Page 2", command=p2.lift)
+        b3 = tk.Button(buttonframe, text="Page 3", command=p3.lift)
+
+        b1.pack(side="left")
+        b2.pack(side="left")
+        b3.pack(side="left")
+
+        p1.show()
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    main = MainView(root)
+    main.pack(side="top", fill="both", expand=True)
+    root.wm_geometry("400x400")
+    root.mainloop()
