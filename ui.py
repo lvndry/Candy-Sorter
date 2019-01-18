@@ -27,10 +27,10 @@ class Page2(Page):
        Page.__init__(self, *args, **kwargs)
        label = tk.Label(self, text="Configure your Candy Sorter")
        label.pack(side="top", fill="both", expand=True)
-       initialValue = tk.StringVar(self)
-       initialValue.set("one") # initial value
+       self.numberOfCups = tk.IntVar(self)
+       self.numberOfCups.set(1)
        cupsLabel = tk.Label(self, text="Number of cups")
-       cupsEntry = tk.OptionMenu(self, initialValue, "one", "two", "three", "four", "five")
+       cupsEntry = tk.OptionMenu(self, self.numberOfCups, 1, 2, 3, 4, 5)
        cupsLabel.pack()
        cupsEntry.pack()
        yellowLabel = tk.Label(self, text="Yellow")
@@ -53,6 +53,11 @@ class Page2(Page):
        brownEntry = tk.Entry(self)
        brownLabel.pack()
        brownEntry.pack()
+       button = tk.Button(self, text="Valid", command=self.StartSorter)
+       button.pack()
+
+   def StartSorter(self):
+     print(self.numberOfCups.get())
 
 class Page3(Page):
    def __init__(self, *args, **kwargs):
