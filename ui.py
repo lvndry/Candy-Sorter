@@ -1,5 +1,15 @@
 import tkinter as tk
 
+class Factory():
+    def buildLabel(self, text, side="left"):
+        label = tk.Label(self, text)
+        label.pack(side, fill="both", expand=True)
+
+    def buldOptionMenu(self, initalValue, *args):
+        init = initalValue
+        optionMenu = tk.OptionMenu(self, init, *args)
+        optionMenu.pack()
+
 class Page(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
@@ -23,41 +33,55 @@ class Page1(Page):
        self.startButton.pack({ "side": "left" })
 
 class Page2(Page):
-   def __init__(self, *args, **kwargs):
-       Page.__init__(self, *args, **kwargs)
-       label = tk.Label(self, text="Configure your Candy Sorter")
-       label.pack(side="top", fill="both", expand=True)
-       self.numberOfCups = tk.IntVar(self)
-       self.numberOfCups.set(1)
-       cupsLabel = tk.Label(self, text="Number of cups")
-       cupsEntry = tk.OptionMenu(self, self.numberOfCups, 1, 2, 3, 4, 5)
-       cupsLabel.pack()
-       cupsEntry.pack()
-       yellowLabel = tk.Label(self, text="Yellow")
-       yellowEntry = tk.Entry(self)
-       yellowLabel.pack()
-       yellowEntry.pack()
-       greenLabel = tk.Label(self, text="Green")
-       greenEntry = tk.Entry(self)
-       yellowLabel.pack()
-       yellowEntry.pack()
-       blueLabel = tk.Label(self, text="Blue")
-       blueEntry = tk.Entry(self)
-       blueLabel.pack()
-       blueEntry.pack()
-       redLabel = tk.Label(self, text="Red")
-       redEntry = tk.Entry(self)
-       redLabel.pack()
-       redEntry.pack()
-       brownLabel = tk.Label(self, text="Brown")
-       brownEntry = tk.Entry(self)
-       brownLabel.pack()
-       brownEntry.pack()
-       button = tk.Button(self, text="Valid", command=self.StartSorter)
-       button.pack()
+    def __init__(self, *args, **kwargs):
+        Page.__init__(self, *args, **kwargs)
+        label = tk.Label(self, text="Configure your Candy Sorter")
+        label.pack(side="top", fill="both", expand=True)
+        self.numberOfCups = self.tkVar()
+        self.yellowCup = self.tkVar()
+        self.greenCup = self.tkVar()
+        self.blueCup = self.tkVar()
+        self.brownCup = self.tkVar()
+        self.redCup = self.tkVar()
+        cupsLabel = tk.Label(self, text="Number of cups")
+        cupsEntry = tk.OptionMenu(self, self.numberOfCups, 1, 2, 3, 4, 5)
+        cupsLabel.pack()
+        cupsEntry.pack()
+        yellowLabel = tk.Label(self, text="Yellow")
+        yellowEntry = tk.OptionMenu(self, self.yellowCup, 1, 2, 3, 4, 5)
+        yellowLabel.pack()
+        yellowEntry.pack()
+        greenLabel = tk.Label(self, text="Green")
+        greenEntry = tk.OptionMenu(self, self.greenCup, 1, 2, 3, 4, 5)
+        yellowLabel.pack()
+        yellowEntry.pack()
+        blueLabel = tk.Label(self, text="Blue")
+        blueEntry = tk.OptionMenu(self, self.blueCup, 1, 2, 3, 4, 5)
+        blueLabel.pack()
+        blueEntry.pack()
+        redLabel = tk.Label(self, text="Red")
+        redEntry = tk.OptionMenu(self, self.redCup, 1, 2, 3, 4, 5)
+        redLabel.pack()
+        redEntry.pack()
+        brownLabel = tk.Label(self, text="Brown")
+        brownEntry = tk.OptionMenu(self, self.brownCup, 1, 2, 3, 4, 5)
+        brownLabel.pack()
+        brownEntry.pack()
+        button = tk.Button(self, text="Valid", command=self.logger)
+        button.pack()
 
-   def StartSorter(self):
-     print(self.numberOfCups.get())
+    def logger(self):
+        print("Number of cups: " + str(self.numberOfCups.get()))
+        print("Yellow goes in cup: " + str(self.yellowCup.get()))
+        print("Blue goes in cup: " + str(self.blueCup.get()))
+        print("Green goes in cup: " + str(self.greenCup.get()))
+        print("Red goes in cup: " + str(self.greenCup.get()))
+        print("Brown goes in cup: " + str(self.brownCup.get()))
+
+    def tkVar(self):
+        value = tk.IntVar(self)
+        value.set(1)
+        return value
 
 class Page3(Page):
    def __init__(self, *args, **kwargs):
