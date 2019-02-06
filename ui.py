@@ -1,15 +1,5 @@
 import tkinter as tk
 
-class Factory():
-    def buildLabel(self, text, side="left"):
-        label = tk.Label(self, text)
-        label.pack(side, fill="both", expand=True)
-
-    def buldOptionMenu(self, initalValue, *args):
-        init = initalValue
-        optionMenu = tk.OptionMenu(self, init, *args)
-        optionMenu.pack()
-
 class Page(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
@@ -38,50 +28,74 @@ class Page2(Page):
         label = tk.Label(self, text="Configure your Candy Sorter")
         label.pack(side="top", fill="both", expand=True)
         self.numberOfCups = self.tkVar()
+        self.numberOfCups.trace('w', self.onNumberOfCupsChange)
         self.yellowCup = self.tkVar()
         self.greenCup = self.tkVar()
         self.blueCup = self.tkVar()
         self.brownCup = self.tkVar()
         self.redCup = self.tkVar()
-        cupsLabel = tk.Label(self, text="Number of cups")
-        cupsEntry = tk.OptionMenu(self, self.numberOfCups, 1, 2, 3, 4, 5)
-        cupsLabel.pack()
-        cupsEntry.pack()
-        yellowLabel = tk.Label(self, text="Yellow")
-        yellowEntry = tk.OptionMenu(self, self.yellowCup, 1, 2, 3, 4, 5)
-        yellowLabel.pack()
-        yellowEntry.pack()
-        greenLabel = tk.Label(self, text="Green")
-        greenEntry = tk.OptionMenu(self, self.greenCup, 1, 2, 3, 4, 5)
-        yellowLabel.pack()
-        yellowEntry.pack()
-        blueLabel = tk.Label(self, text="Blue")
-        blueEntry = tk.OptionMenu(self, self.blueCup, 1, 2, 3, 4, 5)
-        blueLabel.pack()
-        blueEntry.pack()
-        redLabel = tk.Label(self, text="Red")
-        redEntry = tk.OptionMenu(self, self.redCup, 1, 2, 3, 4, 5)
-        redLabel.pack()
-        redEntry.pack()
-        brownLabel = tk.Label(self, text="Brown")
-        brownEntry = tk.OptionMenu(self, self.brownCup, 1, 2, 3, 4, 5)
-        brownLabel.pack()
-        brownEntry.pack()
-        button = tk.Button(self, text="Valid", command=self.logger)
-        button.pack()
+        self.cupsArray = self.cupOptions(self.numberOfCups.get())
+        self.cupsLabel = tk.Label(self, text="Number of cups")
+        self.cupsEntry = tk.OptionMenu(self, self.numberOfCups, 1, 2, 3, 4, 5)
+        self.cupsLabel.pack()
+        self.cupsEntry.pack()
+        self.yellowLabel = tk.Label(self, text="Yellow")
+        self.yellowEntry = tk.OptionMenu(self, self.yellowCup, *self.cupsArray)
+        self.yellowLabel.pack()
+        self.yellowEntry.pack()
+        self.greenLabel = tk.Label(self, text="Green")
+        self.greenEntry = tk.OptionMenu(self, self.greenCup, *self.cupsArray)
+        self.yellowLabel.pack()
+        self.yellowEntry.pack()
+        self.blueLabel = tk.Label(self, text="Blue")
+        self.blueEntry = tk.OptionMenu(self, self.blueCup, *self.cupsArray)
+        self.blueLabel.pack()
+        self.blueEntry.pack()
+        self.redLabel = tk.Label(self, text="Red")
+        self.redEntry = tk.OptionMenu(self, self.redCup, *self.cupsArray)
+        self.redLabel.pack()
+        self.redEntry.pack()
+        self.brownLabel = tk.Label(self, text="Brown")
+        self.brownEntry = tk.OptionMenu(self, self.brownCup, *self.cupsArray)
+        self.brownLabel.pack()
+        self.brownEntry.pack()
+        self.button = tk.Button(self, text="Valid", command=self.logger)
+        self.button.pack()
 
     def logger(self):
         print("Number of cups: " + str(self.numberOfCups.get()))
         print("Yellow goes in cup: " + str(self.yellowCup.get()))
         print("Blue goes in cup: " + str(self.blueCup.get()))
         print("Green goes in cup: " + str(self.greenCup.get()))
-        print("Red goes in cup: " + str(self.greenCup.get()))
+        print("Red goes in cup: " + str(self.redCup.get()))
         print("Brown goes in cup: " + str(self.brownCup.get()))
+
+    def updateMenu(self, entry):
+        menu = entry["menu"]
+        menu.delete(0, "end")
+        for val in self.cupsArray:
+            menu.add_command(label=val, command=lambda value=val: self.numberOfCups.set(value))
 
     def tkVar(self):
         value = tk.IntVar(self)
         value.set(1)
         return value
+
+    def cupOptions(self, numberMax):
+        arr = []
+        for i in range(0, numberMax):
+            arr.append(i+1)
+        print(arr)
+        return arr
+
+    def onNumberOfCupsChange(self, name='', index='', mode=''):
+        self.cupsArray = self.cupOptions(self.numberOfCups.get())
+        self.updateMenu(self.yellowEntry)
+        self.updateMenu(self.blueEntry)
+        self.updateMenu(self.greenEntry)
+        self.updateMenu(self.redEntry)
+        self.updateMenu(self.brownEntry)
+        return self.cupsArray
 
 class Page3(Page):
    def __init__(self, *args, **kwargs):
