@@ -1,5 +1,6 @@
-import tkinter as tk
 import json
+import os
+import tkinter as tk
 
 class Page(tk.Frame):
     def __init__(self, *args, **kwargs):
@@ -71,7 +72,8 @@ class Page2(Page):
             "yellow": self.yellowCup.get(),
             "blue": self.blueCup.get(),
             "green": self.greenCup.get(),
-            "brown": self.brownCup.get()
+            "brown": self.brownCup.get(),
+            "unkown": self.numberOfCups.get() + 1
         }
         print(config)
         print("Number of cups: " + str(self.numberOfCups.get()))
@@ -120,9 +122,9 @@ class Page3(Page):
 class MainView(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
-        p1 = Page1(self)
-        p2 = Page2(self)
         p3 = Page3(self)
+        p2 = Page2(self)
+        p1 = Page1(self)
 
         buttonframe = tk.Frame(self)
         container = tk.Frame(self)
@@ -143,6 +145,8 @@ class MainView(tk.Frame):
         p1.show()
 
 if __name__ == "__main__":
+    if os.path.exists("config.json"):
+        os.remove("config.json")
     root = tk.Tk()
     main = MainView(root)
     main.pack(side="top", fill="both", expand=True)

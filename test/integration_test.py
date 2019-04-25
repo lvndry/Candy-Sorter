@@ -2,8 +2,6 @@ from string import Template
 import RPi.GPIO as GPIO
 import time
 
-print("\n+----------/ Servomotor controller /------------+\n\n")
-
 print("\n+----------/ Servomotor controller /------------+")
 print("|                Candy - Sorter                 |")
 print("|   Servo must be plugged on pin 11 / GPIO 17   |")
@@ -19,11 +17,13 @@ SIGNAL_DETECTOR_PIN = 25
 NUM_CYCLES = 1000
 NUM_CYCLES2 = 10
 SERVO_PIN = 17
-FREQUENCY = 22
+FREQUENCY = 50
+START_FC = 50
 DUTY_CYCLE = 5
-ANGLE = 180
+UNIT_ANGLE = 60
 
 def setup():
+	GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setup(LINE_FINDER_PIN,GPIO.IN)
 	GPIO.setup(SERVO_PIN, GPIO.OUT)
@@ -112,14 +112,14 @@ def savoir_couleur():
     if( (18000 <= red <= 20500) and (19500 <= blue <= 21200) and (14100 <= green <= 16700)):
             return "orange"
     if( (16000 <= red <= 17950) and (18000 <= blue <= 20000) and (14000 <= green <= 15100)):
-            return "rouge"
+            return "red"
     if( (18500 <= red <= 21600) and (20000 <= blue <= 22500) and (17500 <= green <= 20000)):
-            return "jaune"
+            return "yellow"
     if( (14700 <= red <= 15900) and (19500 <= blue <= 20500) and (14200 <= green <= 15000)):
             return "violet"
     if( (15001 <= red <= 16900) and (19500 <= blue <= 20500) and (15300 <= green <= 17700)):
-            return "vert"
-    return "inconnu"
+            return "green"
+    return "unkown"
 
 def suiveur_ligne():
 	# Return HIGH when black line is detected, and LOW when white line is detected
@@ -146,19 +146,34 @@ def loop(nom = ""):
     if(compteur >= 30):
 		print("reponse capteur : inconnu")
 	pwm = GPIO.PWM(SERVO_PIN, FREQUENCY)
-    pwm.start(DUTY_CYCLE)
-    GPIO.setwarnings(False)
+    pwm.start(START_FC)
     founded = False
-    angle = (float(ANGLE)/10 + 5)
+    angle = (float(UNIT_ANGLE)/10 + 5)
     pwm.ChangeDutyCycle(angle)
     debut = time.time()
     while founded === False:
 		founded = suiveur_ligne()
-		chrono = time.time()-debut
+		chrono = time.time() - debut
 		if(chrono < 0.25 and founded==False):
 			debut = time.time()
 	pwm.stop()
 	return debut
+
+def rotation(angle):
+	pwm.start(START_FC)
+
+	angle = (float(angle)/180 + 1) * 5
+	pwm.ChangeDutyCycle(angle)
+	time.sleep(ROTATION_TIME) # 60 degree
+
+	pwm.ChangeDutyCycle(0)
+	time.sleep(2)
+
+	origin = (((360 - angle) / 180) + 1) * 5
+	pwm.ChangeDutyCycle(origin)
+	time.sleep(ROTATION_TIME)
+
+	pwm.stop()
 
 def endprogram():
 	GPIO.cleanup()

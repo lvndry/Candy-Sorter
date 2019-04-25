@@ -23,10 +23,9 @@ GPIO.output(17, True)
 pwm = GPIO.PWM(SERVO_PIN, FREQUENCY)
 pwm.start(START_FC)
 
-while True:
-    angle = (float(ANGLE)/180 + 1) * 5
-    pwm.ChangeDutyCycle(angle)
-    time.sleep(ROTATION_TIME) # 60 degree
+angle = (float(ANGLE)/180 + 1) * 5
+pwm.ChangeDutyCycle(angle)
+time.sleep(ROTATION_TIME) # 60 degree
 
 pwm.ChangeDutyCycle(0)
 time.sleep(2)
