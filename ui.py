@@ -83,7 +83,7 @@ class Page2(Page):
         print("Red goes in cup: " + str(self.redCup.get()))
         print("Brown goes in cup: " + str(self.brownCup.get()))
         path = "config.json"
-        configFile = open(path, "w")
+        configFile = open(path, "wr")
         configFile.write(json.dumps(config))
 
     def updateMenu(self, entry, cups):
