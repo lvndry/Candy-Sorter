@@ -44,8 +44,6 @@ class Page2(Page):
         self.yellowEntry = tk.OptionMenu(self, self.yellowCup, *self.cupsArray)
         self.yellowLabel.grid(row=2, column=0)
         self.yellowEntry.grid(row=2, column=1)
-        self.greenLabel = tk.Label(self, text="Green")
-        self.greenEntry = tk.OptionMenu(self, self.greenCup, *self.cupsArray)
         self.yellowLabel.grid(row=3, column=0)
         self.yellowEntry.grid(row=3, column=1)
         self.blueLabel = tk.Label(self, text="Blue")
@@ -60,8 +58,12 @@ class Page2(Page):
         self.brownEntry = tk.OptionMenu(self, self.brownCup, *self.cupsArray)
         self.brownLabel.grid(row=6, column=0)
         self.brownEntry.grid(row=6, column=1)
+        self.greenLabel = tk.Label(self, text="Green")
+        self.greenEntry = tk.OptionMenu(self, self.greenCup, *self.cupsArray)
+        self.greenLabel.grid(row=7, column=0)
+        self.greenEntry.grid(row=7, column=1)
         self.button = tk.Button(self, text="Valid", command=self.logger)
-        self.button.grid(row=7, column=1)
+        self.button.grid(row=8, column=1)
 
     def logger(self):
         config = {
@@ -78,6 +80,9 @@ class Page2(Page):
         print("Green goes in cup: " + str(self.greenCup.get()))
         print("Red goes in cup: " + str(self.redCup.get()))
         print("Brown goes in cup: " + str(self.brownCup.get()))
+        path = "config.json"
+        configFile = open(path, "w")
+        configFile.write(json.dumps(config))
 
     def updateMenu(self, entry, cups):
         menu = entry["menu"]
@@ -128,13 +133,12 @@ class MainView(tk.Frame):
         p2.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
         p3.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
 
-        b1 = tk.Button(buttonframe, text="Welcome", command=p1.lift)
+        b1 = tk.Button(buttonframe, text="Start Menu", command=p1.lift)
+        b1.pack(side="top")
         b2 = tk.Button(buttonframe, text="Configure", command=p2.lift)
-        b3 = tk.Button(buttonframe, text="Page 3", command=p3.lift)
-
-        b1.pack(side="left")
-        b2.pack(side="left")
-        b3.pack(side="left")
+        b2.pack(side="top")
+        # b3 = tk.Button(buttonframe, text="Page 3", command=p3.lift)
+        # b3.pack(side="top")
 
         p1.show()
 
